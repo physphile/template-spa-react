@@ -1,0 +1,7 @@
+extends:
+    - stylelint-config-standard
+plugins:
+    - stylelint-use-nesting
+rules:
+    selector-nested-pattern: ^&
+    csstools/use-nesting: always
