@@ -12,7 +12,9 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"typecheck": "tsc --noEmit",
-		"lint:all": "run-p typecheck lint format:check"
+		"lint:circular": "npx dpdm --exit-code circular:1 --no-tree --no-warning --progress false --transform './src/App.tsx'",
+		"lint:deadcode": "knip --exclude binaries,dependencies,unlisted",
+		"lint:all": "run-p typecheck lint format:check lint:circular lint:deadcode"
 	},
 	"dependencies": {
 		"@gravity-ui/date-utils": "^2.5.6",
@@ -35,6 +37,7 @@
 		"@types/react": "^18.3.23",
 		"@types/react-dom": "^18.3.7",
 		"@vitejs/plugin-react-swc": "^4.0.0",
+		"dpdm": "^3.14.0",
 		"eslint": "^9.33.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-import-resolver-typescript": "^4.4.4",
@@ -48,6 +51,7 @@
 		"eslint-plugin-unicorn": "^60.0.0",
 		"globals": "^16.3.0",
 		"jiti": "^2.5.1",
+		"knip": "^5.62.0",
 		"npm-run-all": "^4.1.5",
 		"react-router": "^7.8.1",
 		"typescript": "~5.8.3",
