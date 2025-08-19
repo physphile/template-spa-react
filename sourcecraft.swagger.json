@@ -1,0 +1,4705 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "SourceCraft API",
+    "description": "Bleeding edge of Public REST API of SourceCraft",
+    "version": "0.0.1",
+    "contact": {
+      "email": "info@sourcecraft.dev"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/issue_comments/id:{issue_comment_id}": {
+      "get": {
+        "summary": "Get Comment",
+        "operationId": "GetIssueComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueComment"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Comment",
+        "description": "Permanently deletes a comment from an issue. This action cannot be undone.",
+        "operationId": "DeleteIssueComment",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      },
+      "patch": {
+        "summary": "Update Comment",
+        "description": "Update a comment",
+        "operationId": "UpdateIssueComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueComment"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateIssueCommentBody"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      }
+    },
+    "/issue_comments/id:{issue_comment_id}/attachments": {
+      "get": {
+        "summary": "List attachments",
+        "description": "Retrieves all attachments from an issue",
+        "operationId": "ListIssueCommentAttachments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AttachmentsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Comments | Attachments"
+        ]
+      },
+      "post": {
+        "summary": "Upload attachment",
+        "description": "Uploads attachment to an issue",
+        "operationId": "UploadIssueCommentAttachment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Attachment"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Comments | Attachments"
+        ]
+      }
+    },
+    "/issue_comments/id:{issue_comment_id}/attachments/{attachment_id}": {
+      "get": {
+        "summary": "Get attachment",
+        "description": "Gets attachment details and download URL",
+        "operationId": "GetIssueCommentAttachment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AttachmentDownloadable"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Comments | Attachments"
+        ]
+      },
+      "delete": {
+        "summary": "Remove attachment",
+        "description": "Permanently removes an attachment from a comment. The file will be deleted and cannot be reused.",
+        "operationId": "DeleteIssueCommentAttachment",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Comments | Attachments"
+        ]
+      }
+    },
+    "/issue_comments/id:{issue_comment_id}/reactions": {
+      "delete": {
+        "summary": "Remove Reaction",
+        "description": "Remove a reaction from an issue comment",
+        "operationId": "RemoveReaction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Reactions"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyReactionBody"
+            }
+          }
+        ],
+        "tags": [
+          "Issues | Comments | Reactions"
+        ]
+      },
+      "post": {
+        "summary": "Add Reaction",
+        "description": "Adds a reaction to an issue comment",
+        "operationId": "AddReaction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Reactions"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_comment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyReactionBody"
+            }
+          }
+        ],
+        "tags": [
+          "Issues | Comments | Reactions"
+        ]
+      }
+    },
+    "/issue_links/id:{issue_link_id}": {
+      "delete": {
+        "summary": "Delete Link (By Link ID)",
+        "description": "Removes links between issues by ID",
+        "operationId": "DeleteIssueLink",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_link_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked Issues"
+        ]
+      }
+    },
+    "/issue_statuses": {
+      "get": {
+        "summary": "List system statuses",
+        "description": "Lists Issue Statuses available for any issue",
+        "operationId": "ListIssueStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListIssueStatusesResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Issues | Statuses"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}": {
+      "get": {
+        "summary": "Get Issue (By ID)",
+        "operationId": "GetIssueByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Issue"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Issue (By Issue ID)",
+        "operationId": "DeleteIssueByID",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      },
+      "patch": {
+        "summary": "Update Issue (By Issue ID)",
+        "operationId": "UpdateIssueByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Issue"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateIssueBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}/attachments": {
+      "get": {
+        "summary": "List attachments (By Issue ID)",
+        "description": "Retrieves all attachments from an issue",
+        "operationId": "ListIssueAttachmentsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AttachmentsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}/attachments/{attachment_id}": {
+      "get": {
+        "summary": "Get attachment (By Issue ID)",
+        "description": "Gets attachment details and download URL",
+        "operationId": "GetIssueAttachmentByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AttachmentDownloadable"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      },
+      "delete": {
+        "summary": "Remove attachment (by Issue ID)",
+        "description": "Permanently removes an attachment from an issue. The file will be deleted and cannot be reused.",
+        "operationId": "DeleteIssueAttachmentByID",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}/comments": {
+      "get": {
+        "summary": "List Comments (by ID)",
+        "description": "Retrieves comments for an issue",
+        "operationId": "ListIssueCommentsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListIssueCommentsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "description": "The maximum number of issues to return. The service may return fewer than\nthis value",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "description": "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters must match\nthe call that provided the page token.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "description": "Ordering options: comma separated list of fields. For example: \"name, created_at\"\nDefault sorting order is ascending. To specify descending order for a field,\nappend a \"-\" prefix; for example: \"name, -created_at\"\nRedundant space characters in the syntax are insignificant. \"foo, -bar\", \" foo , -bar\", and \"foo,bar\"\nare all equivalent.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      },
+      "post": {
+        "summary": "Create comment (by Issue ID)",
+        "operationId": "CreateIssueCommentByID",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueComment"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateIssueCommentBody"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}/issue_links": {
+      "get": {
+        "summary": "List Issue Links (By Issue ID)",
+        "description": "Retrieves links between this issue and other issues",
+        "operationId": "ListIssueLinksByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListLinksResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "description": "The maximum number of issues to return. The service may return fewer than\nthis value",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "description": "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters must match\nthe call that provided the page token.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "description": "Ordering options: comma separated list of fields. For example: \"name, created_at\"\nDefault sorting order is ascending. To specify descending order for a field,\nappend a \"-\" prefix; for example: \"name, -created_at\"\nRedundant space characters in the syntax are insignificant. \"foo, -bar\", \" foo , -bar\", and \"foo,bar\"\nare all equivalent.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Linked Issues"
+        ]
+      },
+      "post": {
+        "summary": "Create Link between Issues (By Issue ID)",
+        "description": "Creates a two-way relation from source issue to target issue of a specific type. Only one link can exist between two given issues.",
+        "operationId": "CreateIssueLinkByID",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLink"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateLinkBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked Issues"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}/labels": {
+      "get": {
+        "summary": "List Labels (By Issue ID)",
+        "description": "Retrieves all labels that are linked to the specified issue.",
+        "operationId": "GetLabelsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      },
+      "delete": {
+        "summary": "Remove labels (By Issue ID)",
+        "description": "Removes one or more labels from a specific issue. Returns resulting collection.",
+        "operationId": "RemoveLabelsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLabelCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      },
+      "post": {
+        "summary": "Add Labels (By Issue ID)",
+        "description": "Associates one or more labels with a specific issue. Returns resulting collection.",
+        "operationId": "AddLabelsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLabelCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      },
+      "put": {
+        "summary": "Replace Labels (By Issue ID)",
+        "description": "Completely replaces the current set of labels on an issue with the provided set.",
+        "operationId": "ReplaceLabelsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLabelCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      }
+    },
+    "/issues/id:{issue_id}/linked_prs": {
+      "get": {
+        "summary": "List Linked PRs (By Issue ID)",
+        "description": "Retrieves all pull requests that are linked to the specified issue.",
+        "operationId": "GetLinkedPRsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLinkedPRsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Linked PRs"
+        ]
+      },
+      "delete": {
+        "summary": "Remove linked PRs (by ID)",
+        "description": "Removes one or more pull requests with a specific issue. Returns resulting collection",
+        "operationId": "RemoveLinkedPRsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLinkedPRsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyPullRequestCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked PRs"
+        ]
+      },
+      "post": {
+        "summary": "Add linked PRs (By ID)",
+        "description": "Associates one or more pull requests with a specific issue. Returns resulting collection",
+        "operationId": "AddLinkedPRsByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLinkedPRsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "issue_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyPullRequestCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked PRs"
+        ]
+      }
+    },
+    "/labels/id:{label_id}": {
+      "get": {
+        "summary": "Get Label (By Label ID)",
+        "operationId": "GetLabelByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1.Label"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      },
+      "delete": {
+        "summary": "Delete label (By Label ID)",
+        "operationId": "DeleteLabelByID",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      },
+      "patch": {
+        "summary": "Update Label (By Label ID)",
+        "operationId": "UpdateLabelByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1.Label"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "label_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateLabelBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      }
+    },
+    "/me/issues": {
+      "get": {
+        "summary": "My Issues",
+        "description": "Returns a list of issues that are either assigned to or created by the currently authenticated user.",
+        "operationId": "ListIssuesAssignedToAuthenticatedUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListIssuesAssignedToAuthenticatedUserResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      }
+    },
+    "/milestones/id:{milestone_id}": {
+      "get": {
+        "summary": "Get a Milestone (By ID)",
+        "operationId": "GetMilestoneByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Milestone"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "milestone_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Milestone (By ID)",
+        "operationId": "DeleteMilestoneByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "milestone_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      },
+      "patch": {
+        "summary": "Update a Milestone (By ID)",
+        "operationId": "UpdateMilestoneByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Milestone"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "milestone_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateMilestoneBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      }
+    },
+    "/orgs/id:{org_id}/repos": {
+      "post": {
+        "summary": "Create Repository in Organization (By Organization ID)",
+        "operationId": "CreateRepositoryByID",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Repository"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRepositoryBody"
+            }
+          }
+        ],
+        "tags": [
+          "Repository"
+        ]
+      }
+    },
+    "/orgs/{org_slug}/repos": {
+      "post": {
+        "summary": "Create Repository in Organization",
+        "operationId": "CreateRepository",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Repository"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRepositoryBody"
+            }
+          },
+          {
+            "name": "org_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository"
+        ]
+      }
+    },
+    "/repos/id:{repo_id}": {
+      "get": {
+        "summary": "Get Repository (By ID)",
+        "operationId": "GetRepositoryByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Repository"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository"
+        ]
+      }
+    },
+    "/repos/id:{repo_id}/issues": {
+      "get": {
+        "summary": "List Repository Issues (By Repo ID)",
+        "operationId": "ListRepositoryIssuesByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListRepositoryIssuesResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "description": "The maximum number of issues to return. The service may return fewer than\nthis value",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "description": "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters must match\nthe call that provided the page token.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "description": "Ordering options: comma separated list of fields. For example: \"name, created_at\"\nDefault sorting order is ascending. To specify descending order for a field,\nappend a \"-\" prefix; for example: \"name, -created_at\"\nRedundant space characters in the syntax are insignificant. \"foo, -bar\", \" foo , -bar\", and \"foo,bar\"\nare all equivalent.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "description": "Filter using QL language",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      },
+      "post": {
+        "summary": "Create Issue in Repository (By Repo ID)",
+        "operationId": "CreateIssueByID",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Issue"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateIssueBody"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      }
+    },
+    "/repos/id:{repo_id}/labels": {
+      "get": {
+        "summary": "List labels (By ID)",
+        "operationId": "ListLabelsForRepositoryByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListLabelsForRepositoryResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      },
+      "post": {
+        "summary": "Create Label (By ID)",
+        "operationId": "CreateLabelByID",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1.Label"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateLabelBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      }
+    },
+    "/repos/id:{repo_id}/milestones": {
+      "get": {
+        "summary": "List Repository Milestones (By Repo ID)",
+        "operationId": "ListMilestonesForRepositoryByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListMilestonesForRepositoryResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      },
+      "post": {
+        "summary": "Create a Milestone (By Repo ID)",
+        "operationId": "CreateMilestoneByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Milestone"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "repo_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateMilestoneBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}": {
+      "get": {
+        "summary": "Get Repository",
+        "operationId": "GetRepository",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Repository"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues": {
+      "get": {
+        "summary": "List Repository Issues",
+        "operationId": "ListRepositoryIssues",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListRepositoryIssuesResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "description": "The maximum number of issues to return. The service may return fewer than\nthis value",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "description": "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters must match\nthe call that provided the page token.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "description": "Ordering options: comma separated list of fields. For example: \"name, created_at\"\nDefault sorting order is ascending. To specify descending order for a field,\nappend a \"-\" prefix; for example: \"name, -created_at\"\nRedundant space characters in the syntax are insignificant. \"foo, -bar\", \" foo , -bar\", and \"foo,bar\"\nare all equivalent.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "description": "Filter using QL language",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      },
+      "post": {
+        "summary": "Create Issue in Repository",
+        "operationId": "CreateIssue",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Issue"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateIssueBody"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}": {
+      "get": {
+        "summary": "Get Issue",
+        "operationId": "GetIssue",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Issue"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Issue",
+        "operationId": "DeleteIssue",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      },
+      "patch": {
+        "summary": "Update Issue",
+        "operationId": "UpdateIssue",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Issue"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateIssueBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}/attachments": {
+      "get": {
+        "summary": "List attachments",
+        "description": "Retrieves all attachments from an issue",
+        "operationId": "ListIssueAttachments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AttachmentsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      },
+      "post": {
+        "summary": "Upload attachment",
+        "description": "Uploads attachment to an issue",
+        "operationId": "UploadIssueAttachment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Attachment"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}/attachments/{attachment_id}": {
+      "get": {
+        "summary": "Get attachment",
+        "description": "Gets attachment details and download URL",
+        "operationId": "GetIssueAttachment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AttachmentDownloadable"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      },
+      "delete": {
+        "summary": "Remove attachment",
+        "description": "Permanently removes an attachment from an issue. The file will be deleted and cannot be reused.",
+        "operationId": "DeleteIssueAttachment",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Attachments"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}/comments": {
+      "get": {
+        "summary": "List Comments",
+        "description": "Retrieves comments for an issue",
+        "operationId": "ListIssueComments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListIssueCommentsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "description": "The maximum number of issues to return. The service may return fewer than\nthis value",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "description": "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters must match\nthe call that provided the page token.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "description": "Ordering options: comma separated list of fields. For example: \"name, created_at\"\nDefault sorting order is ascending. To specify descending order for a field,\nappend a \"-\" prefix; for example: \"name, -created_at\"\nRedundant space characters in the syntax are insignificant. \"foo, -bar\", \" foo , -bar\", and \"foo,bar\"\nare all equivalent.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      },
+      "post": {
+        "summary": "Create comment",
+        "operationId": "CreateIssueComment",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueComment"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateIssueCommentBody"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "do not notify subscribers",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Comments"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}/issue_links": {
+      "get": {
+        "summary": "List Issue Links",
+        "description": "Retrieves links between this issue and other issues",
+        "operationId": "ListIssueLinks",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListLinksResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "description": "The maximum number of issues to return. The service may return fewer than\nthis value",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "description": "A page token, received from a previous call.\nProvide this to retrieve the subsequent page.\n\nWhen paginating, all other parameters must match\nthe call that provided the page token.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "description": "Ordering options: comma separated list of fields. For example: \"name, created_at\"\nDefault sorting order is ascending. To specify descending order for a field,\nappend a \"-\" prefix; for example: \"name, -created_at\"\nRedundant space characters in the syntax are insignificant. \"foo, -bar\", \" foo , -bar\", and \"foo,bar\"\nare all equivalent.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Linked Issues"
+        ]
+      },
+      "post": {
+        "summary": "Create Link between Issues",
+        "description": "Creates a two-way relation from source issue to target issue of a specific type. Only one link can exist between two given issues.",
+        "operationId": "CreateIssueLink",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLink"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateLinkBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked Issues"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}/labels": {
+      "get": {
+        "summary": "List Labels",
+        "description": "Retrieves all labels that are linked to the specified issue.",
+        "operationId": "GetLabels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "depending on which route is used, either parent or repoId is filled",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      },
+      "delete": {
+        "summary": "Remove labels",
+        "description": "Removes one or more labels from a specific issue. Returns resulting collection.",
+        "operationId": "RemoveLabels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "depending on which route is used, either parent or repoId is filled",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLabelCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      },
+      "post": {
+        "summary": "Add Labels",
+        "description": "Associates one or more labels with a specific issue. Returns resulting collection.",
+        "operationId": "AddLabels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "depending on which route is used, either parent or repoId is filled",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLabelCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      },
+      "put": {
+        "summary": "Replace Labels",
+        "description": "Completely replaces the current set of labels on an issue with the provided set.",
+        "operationId": "ReplaceLabels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLabelsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLabelCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Labels"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/issues/{issue_slug}/linked_prs": {
+      "get": {
+        "summary": "List Linked PRs",
+        "description": "Retrieves all pull requests that are linked to the specified issue.",
+        "operationId": "GetLinkedPRs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLinkedPRsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "depending on which route is used, either parent or repoId is filled",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Issues | Linked PRs"
+        ]
+      },
+      "delete": {
+        "summary": "Remove linked PRs",
+        "description": "Removes one or more pull requests with a specific issue. Returns resulting collection",
+        "operationId": "RemoveLinkedPRs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLinkedPRsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "depending on which route is used, either parent or repoId is filled",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyPullRequestCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked PRs"
+        ]
+      },
+      "post": {
+        "summary": "Add Linked PRs",
+        "description": "Associates one or more pull requests with a specific issue. Returns resulting collection",
+        "operationId": "AddLinkedPRs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/IssueLinkedPRsResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "depending on which route is used, either parent or repoId is filled",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "issue_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyPullRequestCollectionRequest"
+            }
+          },
+          {
+            "name": "silent",
+            "description": "creation options (query)",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Issues | Linked PRs"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/labels": {
+      "get": {
+        "summary": "List labels",
+        "operationId": "ListLabelsForRepository",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListLabelsForRepositoryResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      },
+      "post": {
+        "summary": "Create Label",
+        "operationId": "CreateLabel",
+        "responses": {
+          "201": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1.Label"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateLabelBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/labels/{label_slug}": {
+      "get": {
+        "summary": "Get Label (By Slug)",
+        "operationId": "GetLabel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1.Label"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "label_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      },
+      "delete": {
+        "summary": "Delete label (By Slug)",
+        "operationId": "DeleteLabel",
+        "responses": {
+          "204": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "label_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      },
+      "patch": {
+        "summary": "Update Label (By Slug)",
+        "operationId": "UpdateLabel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1.Label"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "label_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateLabelBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Labels"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/milestones": {
+      "get": {
+        "summary": "List Repository Milestones",
+        "operationId": "ListMilestonesForRepository",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ListMilestonesForRepositoryResponse"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      },
+      "post": {
+        "summary": "Create a Milestone",
+        "operationId": "CreateMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Milestone"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateMilestoneBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      }
+    },
+    "/repos/{org_slug}/{repo_slug}/milestones/{milestone_slug}": {
+      "get": {
+        "summary": "Get a Milestone (By Slug)",
+        "operationId": "GetMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Milestone"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "milestone_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Milestone (By Slug)",
+        "operationId": "DeleteMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "milestone_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      },
+      "patch": {
+        "summary": "Update a Milestone (By Slug)",
+        "operationId": "UpdateMilestone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Milestone"
+            }
+          },
+          "default": {
+            "description": "Both Client Errors (4xx) and Server Errors (5xx) are serialized into this scheme",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "org_slug",
+            "description": "Path parameters for different routes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "milestone_slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateMilestoneBody"
+            }
+          },
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Repository | Milestones"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ApiErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "title": "Error code that can be used for error handling. For example: \"ValidationError\""
+        },
+        "message": {
+          "type": "string",
+          "title": "Human-readable message"
+        },
+        "request_id": {
+          "type": "string",
+          "title": "Request ID"
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Optional details. Exact structure depends on error_code"
+        }
+      }
+    },
+    "Attachment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mime_type": {
+          "type": "string"
+        },
+        "file_type": {
+          "$ref": "#/definitions/FileType"
+        },
+        "size": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "AttachmentDownloadable": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mime_type": {
+          "type": "string"
+        },
+        "file_type": {
+          "$ref": "#/definitions/FileType"
+        },
+        "size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "url": {
+          "type": "string",
+          "title": "temporary download url"
+        }
+      }
+    },
+    "AttachmentEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "AttachmentsResponse": {
+      "type": "object",
+      "properties": {
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Attachment"
+          }
+        }
+      }
+    },
+    "CloneURL": {
+      "type": "object",
+      "properties": {
+        "https": {
+          "type": "string"
+        },
+        "ssh": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateIssueBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Issue title (up to 1024 characters)"
+        },
+        "description": {
+          "type": "string",
+          "title": "Issue description (up to 10Mb)"
+        },
+        "status_slug": {
+          "type": "string",
+          "title": "Status. System-wide statuses: open, inProgress, paused, closed, declined, duplicate"
+        },
+        "priority": {
+          "$ref": "#/definitions/Priority",
+          "title": "Priority"
+        },
+        "assignee_id": {
+          "type": "string"
+        },
+        "milestone_id": {
+          "type": "string"
+        },
+        "milestone_slug": {
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/definitions/Issue.Visibility"
+        },
+        "label_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "IDs of labels from this repository which are to be linked to the issue. Cannot be used with label_slugs"
+        },
+        "label_slugs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Slugs of labels from this repository which are to be linked to the issue. Cannot be used with label_ids"
+        },
+        "linked_pr_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "IDs of PRs from this repository which are to be linked to the issue. Cannot be used with linked_pr_slugs"
+        },
+        "linked_pr_slugs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Slugs to PRs from this repository which are to be linked to the issue. Cannot be used with linked_pr_id. For example [\"1\", \"2\", \"10\"]"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time",
+          "title": "User-defined deadline for the issue"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "CreateIssueCommentBody": {
+      "type": "object",
+      "properties": {
+        "parent_id": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateLabelBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "label name"
+        },
+        "slug": {
+          "type": "string",
+          "title": "optional, default slug is generated from name"
+        },
+        "color": {
+          "type": "string",
+          "title": "optional, default color is gray"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "CreateLinkBody": {
+      "type": "object",
+      "properties": {
+        "target_issue_id": {
+          "type": "string"
+        },
+        "target_issue_slug": {
+          "type": "string"
+        },
+        "link_type": {
+          "$ref": "#/definitions/IssueLink.LinkType"
+        }
+      }
+    },
+    "CreateMilestoneBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "milestone name"
+        },
+        "slug": {
+          "type": "string",
+          "title": "optional, default slug is generated from name"
+        },
+        "description": {
+          "type": "string",
+          "title": "optional, milestone description"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date-time",
+          "title": "optional, milestone start date"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time",
+          "title": "optional, milestone deadline (end date)"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "CreateRepositoryBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Repository name (up to 256 characters)"
+        },
+        "slug": {
+          "type": "string",
+          "title": "Repository slug (up to 256 characters)"
+        },
+        "description": {
+          "type": "string",
+          "title": "Repository description (up to 10Mb)"
+        },
+        "visibility": {
+          "$ref": "#/definitions/Repository.Visibility",
+          "title": "Repository visibility. Available values: public, private"
+        },
+        "init_settings": {
+          "$ref": "#/definitions/InitSettings",
+          "title": "Repository initialization settings"
+        }
+      },
+      "required": [
+        "name",
+        "slug"
+      ]
+    },
+    "FileType": {
+      "type": "string",
+      "enum": [
+        "image",
+        "document",
+        "video",
+        "container"
+      ],
+      "properties": null
+    },
+    "Image": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "InitSettings": {
+      "type": "object",
+      "properties": {
+        "default_branch": {
+          "type": "string",
+          "title": "Repository default branch (up to 256 characters). Optional, \"main\" if omitted"
+        },
+        "create_readme": {
+          "type": "boolean",
+          "title": "Whether to create README.md file with repository name and description"
+        }
+      }
+    },
+    "Issue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/IssueStatus"
+        },
+        "author": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "updated_by": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "assignee": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/LabelEmbedded"
+          }
+        },
+        "linked_prs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/PullRequestEmbedded"
+          }
+        },
+        "priority": {
+          "$ref": "#/definitions/Priority"
+        },
+        "visibility": {
+          "$ref": "#/definitions/Issue.Visibility"
+        },
+        "milestone": {
+          "$ref": "#/definitions/MilestoneEmbedded"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time",
+          "title": "User-defined deadline for the issue"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Timestamp when the issue was last moved to in_progress status"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Timestamp when the issue was last moved to completed or canceled status"
+        }
+      }
+    },
+    "Issue.Visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "private"
+      ],
+      "properties": null
+    },
+    "IssueComment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "parent": {
+          "$ref": "#/definitions/IssueCommentEmbedded"
+        },
+        "author": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "updated_by": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reactions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ReactionCount"
+          },
+          "title": "key is one of Reactions"
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/AttachmentEmbedded"
+          }
+        }
+      }
+    },
+    "IssueCommentEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "IssueEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "IssueLabelsResponse": {
+      "type": "object",
+      "properties": {
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1.Label"
+          }
+        }
+      }
+    },
+    "IssueLink": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/IssueEmbedded"
+        },
+        "target": {
+          "$ref": "#/definitions/IssueEmbedded"
+        },
+        "link_type": {
+          "$ref": "#/definitions/IssueLink.LinkType",
+          "title": "link_type must be read as {sourceIssue} {verb} {targetIssue}: issue#1 is parent of issue#2"
+        },
+        "author": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "updated_by": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "IssueLink.LinkType": {
+      "type": "string",
+      "enum": [
+        "related_to",
+        "parent_of",
+        "subissue_of",
+        "blocks",
+        "blocked_by",
+        "duplicates",
+        "duplicated_by"
+      ],
+      "properties": null
+    },
+    "IssueLinkedPRsResponse": {
+      "type": "object",
+      "properties": {
+        "pull_requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/PullRequest"
+          }
+        }
+      }
+    },
+    "IssueStatus": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status_type": {
+          "$ref": "#/definitions/StatusType"
+        }
+      }
+    },
+    "LabelEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "Language": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Link.LinkType"
+        }
+      }
+    },
+    "Link.LinkType": {
+      "type": "string",
+      "enum": [
+        "social_network",
+        "homepage",
+        "email",
+        "telegram"
+      ],
+      "properties": null
+    },
+    "ListIssueCommentsResponse": {
+      "type": "object",
+      "properties": {
+        "issue_comments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IssueComment"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ListIssueStatusesResponse": {
+      "type": "object",
+      "properties": {
+        "statuses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IssueStatus"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ListIssuesAssignedToAuthenticatedUserResponse": {
+      "type": "object",
+      "properties": {
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Issue"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ListLabelsForRepositoryResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1.Label"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ListLinksResponse": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/IssueLink"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ListMilestonesForRepositoryResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Milestone"
+          }
+        },
+        "next_page_token": {
+          "type": "string"
+        }
+      }
+    },
+    "ListRepositoryIssuesResponse": {
+      "type": "object",
+      "properties": {
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Issue"
+          },
+          "title": "Issues from specific repository"
+        },
+        "next_page_token": {
+          "type": "string",
+          "description": "A token, which can be sent as `page_token` to retrieve the next page.\nIf this field is omitted, there are no subsequent pages."
+        }
+      }
+    },
+    "MergeInfo": {
+      "type": "object",
+      "properties": {
+        "merger": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "merge_parameters": {
+          "$ref": "#/definitions/MergeParameters"
+        },
+        "target_commit_hash": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string",
+          "title": "filled after merge"
+        },
+        "merge_commit_hash": {
+          "type": "string",
+          "title": "filled after merge"
+        }
+      }
+    },
+    "MergeParameters": {
+      "type": "object",
+      "properties": {
+        "rebase": {
+          "type": "boolean"
+        },
+        "squash": {
+          "type": "boolean"
+        },
+        "delete_branch": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Milestone": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/definitions/Milestone.Status"
+        },
+        "author": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "updated_by": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Milestone.Status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "closed"
+      ],
+      "properties": null
+    },
+    "MilestoneEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "ModifyLabelCollectionRequest": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "slugs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ModifyPullRequestCollectionRequest": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "slugs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ModifyReactionBody": {
+      "type": "object",
+      "properties": {
+        "reaction": {
+          "$ref": "#/definitions/Reaction"
+        }
+      }
+    },
+    "OrganizationEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "Priority": {
+      "type": "string",
+      "enum": [
+        "trivial",
+        "minor",
+        "normal",
+        "critical",
+        "blocker"
+      ],
+      "title": "mapping is done by const name, except for the unspecified",
+      "properties": null
+    },
+    "PullRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "updated_by": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "description": {
+          "type": "string"
+        },
+        "repository": {
+          "$ref": "#/definitions/RepositoryEmbedded"
+        },
+        "merge_info": {
+          "$ref": "#/definitions/MergeInfo"
+        },
+        "source_branch": {
+          "type": "string"
+        },
+        "target_branch": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/PullRequest.Status"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PullRequest.Status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "open",
+        "discarded",
+        "merging",
+        "merged"
+      ],
+      "properties": null
+    },
+    "PullRequestEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "Reaction": {
+      "type": "string",
+      "enum": [
+        "like",
+        "dislike",
+        "heart",
+        "check_mark",
+        "eyes",
+        "fire",
+        "victory_hand",
+        "heart_eyes",
+        "hundred_points",
+        "party_popper",
+        "party_face",
+        "rolling_eyes",
+        "fist",
+        "clapping_hands",
+        "thinking_face",
+        "neutral_face",
+        "winking_face",
+        "open_mouth",
+        "shrug",
+        "pleading_face",
+        "confused_face",
+        "smiling_face",
+        "sunglasses",
+        "rocket",
+        "robot",
+        "goose"
+      ],
+      "properties": null
+    },
+    "ReactionCount": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "self_react": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Reactions": {
+      "type": "object",
+      "properties": {
+        "reactions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ReactionCount"
+          }
+        }
+      }
+    },
+    "Repository": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "default_branch": {
+          "type": "string"
+        },
+        "organization": {
+          "$ref": "#/definitions/OrganizationEmbedded"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "is_empty": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/definitions/Repository.Visibility"
+        },
+        "logo": {
+          "$ref": "#/definitions/Image"
+        },
+        "clone_url": {
+          "$ref": "#/definitions/CloneURL"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "counters": {
+          "$ref": "#/definitions/RepositoryCounters"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "language": {
+          "$ref": "#/definitions/Language"
+        }
+      }
+    },
+    "Repository.Visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "internal",
+        "private"
+      ],
+      "properties": null
+    },
+    "RepositoryCounters": {
+      "type": "object",
+      "properties": {
+        "forks": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "pull_requests": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "issues": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "tags": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "branches": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "RepositoryEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "StatusType": {
+      "type": "string",
+      "enum": [
+        "initial",
+        "in_progress",
+        "paused",
+        "completed",
+        "cancelled"
+      ],
+      "properties": null
+    },
+    "UpdateIssueBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Change Issue title (up to 1024 characters)"
+        },
+        "description": {
+          "type": "string",
+          "title": "Change Issue description (up to 10Mb)"
+        },
+        "status_slug": {
+          "type": "string",
+          "title": "Change Status. System-wide statuses: open, inProgress, paused, closed, declined, duplicate"
+        },
+        "priority": {
+          "$ref": "#/definitions/Priority",
+          "title": "Change Priority. Available values: trivial, minor, major, critical, blocker"
+        },
+        "assignee_id": {
+          "type": "string",
+          "title": "Change Assignee, pass empty to clear"
+        },
+        "milestone_id": {
+          "type": "string",
+          "title": "Change Milestone, pass empty to clear"
+        },
+        "visibility": {
+          "$ref": "#/definitions/Issue.Visibility",
+          "title": "Change Visibility. Available values: public, private"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time",
+          "title": "User-defined deadline for the issue"
+        }
+      }
+    },
+    "UpdateIssueCommentBody": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateLabelBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateMilestoneBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/definitions/Milestone.Status"
+        }
+      }
+    },
+    "UserEmbedded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "v1.Label": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "updated_by": {
+          "$ref": "#/definitions/UserEmbedded"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
