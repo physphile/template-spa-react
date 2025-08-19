@@ -20,4 +20,3 @@ updates:
       include: "scope"
     allow:
       - dependency-type: "direct"
-      - dependency-type: "indirect"
