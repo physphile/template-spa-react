@@ -12,7 +12,7 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"typecheck": "tsc --noEmit",
-		"lint:circular": "npx dpdm --exit-code circular:1 --no-tree --no-warning --progress false --transform './src/main.tsx'",
+		"lint:circular": "npx dpdm --exit-code circular:1 --no-tree --no-warning --progress false --transform \"./src/main.tsx\"",
 		"lint:deadcode": "knip --exclude binaries,dependencies,unlisted",
 		"lint:all": "run-p typecheck lint format:check lint:circular lint:deadcode"
 	},
