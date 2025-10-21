@@ -7,9 +7,9 @@ import "@gravity-ui/uikit/styles/fonts.css";
 import "@gravity-ui/uikit/styles/styles.css";
 import "@gravity-ui/illustrations/styles/styles.scss";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router";
+import { RouterProvider } from "react-router";
 
-import { App } from "./App.tsx";
+import { router } from "./router.tsx";
 
 const root = document.querySelector("#root");
 
@@ -21,12 +21,10 @@ const queryClient = new QueryClient();
 
 createRoot(root).render(
 	<StrictMode>
-		<BrowserRouter>
-			<QueryClientProvider client={queryClient}>
-				<ThemeProvider theme="system">
-					<App />
-				</ThemeProvider>
-			</QueryClientProvider>
-		</BrowserRouter>
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider theme="system">
+				<RouterProvider router={router} />
+			</ThemeProvider>
+		</QueryClientProvider>
 	</StrictMode>
 );
