@@ -61,7 +61,7 @@ jobs:
         run: npm ci
 
       - name: Run Prettier format check
-        run: npm run format:check
+        run: npm run format
 
   circular-deps:
     name: Circular Dependencies Check
@@ -80,7 +80,7 @@ jobs:
         run: npm ci
 
       - name: Run circular dependencies check
-        run: npm run lint:circular
+        run: npm run circular
 
   deadcode:
     name: Dead Code Check
@@ -99,4 +99,4 @@ jobs:
         run: npm ci
 
       - name: Run dead code check
-        run: npm run lint:deadcode
+        run: npm run deadcode
