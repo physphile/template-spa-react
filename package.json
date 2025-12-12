@@ -13,7 +13,8 @@
 		"typecheck": "tsc -b",
 		"circular": "npx dpdm --exit-code circular:1 --no-tree --no-warning --progress false --transform \"./src/main.tsx\"",
 		"deadcode": "knip --exclude binaries,dependencies,unlisted",
-		"check": "run-p typecheck lint stylelint circular deadcode"
+		"check": "run-p typecheck lint stylelint circular deadcode",
+		"analyze": "ANALYZE=true vite build"
 	},
 	"dependencies": {
 		"@gravity-ui/date-utils": "^2.6.0",
