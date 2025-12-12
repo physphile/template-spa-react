@@ -1,13 +1,22 @@
-import react from "@vitejs/plugin-react-swc";
-import path from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { analyzer } from "vite-bundle-analyzer";
+
+const shouldAnalyze = process.env.ANALYZE === "true";
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [react({})],
+	plugins: [
+		react({
+			babel: {
+				plugins: [["babel-plugin-react-compiler"]],
+			},
+		}),
+		shouldAnalyze ? analyzer() : undefined,
+	],
 	resolve: {
 		alias: {
-			"@": path.resolve(__dirname, "src"),
+			"@": "/src",
 		},
 	},
 });

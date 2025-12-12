@@ -1,7 +1,3 @@
-import { useWindowWidth } from "./useWindowWidth";
+import { useMediaQuery } from "usehooks-ts";
 
-export const useIsMobile = () => {
-	const width = useWindowWidth();
-
-	return width < 768;
-};
+export const useIsMobile = () => useMediaQuery("(max-width: 768px)");

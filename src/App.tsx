@@ -3,15 +3,20 @@ import {
 	AsideHeader,
 	type DrawerItemProps,
 	FooterItem,
+	type MenuItem,
 	MobileHeader,
 	MobileHeaderFooterItem,
+	type MobileMenuItem,
 } from "@gravity-ui/navigation";
 import { Sheet } from "@gravity-ui/uikit";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router";
+import { QueryParamProvider } from "use-query-params";
 
 import { useIsMobile } from "@/shared/hooks";
 import { Settings } from "@/widgets/Settings";
+
+import { ReactRouter7Adapter } from "./ReactRouter7Adapter";
 
 export const App = () => {
 	const isMobile = useIsMobile();
@@ -19,21 +24,25 @@ export const App = () => {
 	const [isCompact, setIsCompact] = useState(false);
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-	const menuItems = useMemo(
-		() => [
-			{
-				icon: FaceSmile,
-				id: "kek",
-				title: "Kek",
-			},
-		],
-		[]
-	);
+	const menuItems = [
+		{
+			icon: FaceSmile,
+			id: "kek",
+			title: "Kek",
+		},
+	] satisfies MenuItem[] | MobileMenuItem[];
 
-	const panelItems = useMemo<DrawerItemProps[]>(
-		() => [{ children: <Settings />, id: "1", visible: isSettingsOpen }],
-		[isSettingsOpen]
-	);
+	const panelItems = [{ children: <Settings />, id: "1", visible: isSettingsOpen }] satisfies DrawerItemProps[];
+
+	const toggleSettings = () => {
+		setIsSettingsOpen(prev => !prev);
+	};
+
+	const renderContent = () => <Outlet />;
+
+	const onSheetClose = () => {
+		setIsSettingsOpen(false);
+	};
 
 	if (isMobile) {
 		return (
@@ -41,12 +50,12 @@ export const App = () => {
 				<MobileHeader
 					burgerMenu={{
 						items: menuItems,
-						renderFooter: () => <MobileHeaderFooterItem icon={Gear} onClick={() => setIsSettingsOpen(prev => !prev)} />,
+						renderFooter: () => <MobileHeaderFooterItem icon={Gear} onClick={toggleSettings} />,
 					}}
 					logo={{ text: "template-spa-react" }}
-					renderContent={() => <Outlet />}
+					renderContent={renderContent}
 				/>
-				<Sheet onClose={() => setIsSettingsOpen(false)} visible={isSettingsOpen}>
+				<Sheet onClose={onSheetClose} visible={isSettingsOpen}>
 					<Settings />
 				</Sheet>
 			</>
@@ -54,27 +63,31 @@ export const App = () => {
 	}
 
 	return (
-		<AsideHeader
-			compact={isCompact}
-			logo={{ icon: Ear, text: "template-spa-react" }}
-			menuItems={menuItems}
-			onChangeCompact={setIsCompact}
-			onClosePanel={() => setIsSettingsOpen(false)}
-			panelItems={panelItems}
-			renderContent={() => <Outlet />}
-			renderFooter={() => (
-				<>
+		<QueryParamProvider adapter={ReactRouter7Adapter}>
+			<AsideHeader
+				compact={isCompact}
+				logo={{ icon: Ear, text: "template-spa-react" }}
+				menuItems={menuItems}
+				onChangeCompact={setIsCompact}
+				onClosePanel={() => {
+					setIsSettingsOpen(false);
+				}}
+				panelItems={panelItems}
+				renderContent={() => <Outlet />}
+				renderFooter={() => (
 					<FooterItem
 						compact={isCompact}
 						item={{
 							icon: Gear,
 							id: "1",
-							onItemClick: () => setIsSettingsOpen(prev => !prev),
+							onItemClick: () => {
+								setIsSettingsOpen(prev => !prev);
+							},
 							title: "Settings",
 						}}
 					/>
-				</>
-			)}
-		/>
+				)}
+			/>
+		</QueryParamProvider>
 	);
 };
