@@ -20,4 +20,5 @@ export default {
 		"plugin/use-logical-units": [true, { severity: "error" }],
 		"selector-max-compound-selectors": 1,
 	},
+	ignoreFiles: ["dist/**"],
 };
