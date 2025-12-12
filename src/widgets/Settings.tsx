@@ -11,6 +11,7 @@ export const Settings = () => {
 			<GravitySettings.Page title="Основные">
 				<GravitySettings.Section title="Отображение">
 					<GravitySettings.Item title="Всегда скрывать">
+						{/* eslint-disable-next-line react/jsx-max-depth */}
 						<Switch />
 					</GravitySettings.Item>
 				</GravitySettings.Section>

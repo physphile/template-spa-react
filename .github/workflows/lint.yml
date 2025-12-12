@@ -44,8 +44,8 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-  prettier:
-    name: Prettier Format Check
+  stylelint:
+    name: Stylelint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -60,8 +60,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Prettier format check
-        run: npm run format
+      - name: Run Stylelint
+        run: npm run stylelint
 
   circular-deps:
     name: Circular Dependencies Check

@@ -9,7 +9,7 @@ import "@gravity-ui/illustrations/styles/styles.scss";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
 
-import { router } from "./router.tsx";
+import { router } from "./router";
 
 const root = document.querySelector("#root");
 
@@ -23,6 +23,7 @@ createRoot(root).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider theme="system">
+				{/* eslint-disable-next-line react/jsx-max-depth */}
 				<RouterProvider router={router} />
 			</ThemeProvider>
 		</QueryClientProvider>
