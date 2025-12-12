@@ -57,23 +57,23 @@ export default defineConfig([
 				},
 			],
 			"import/no-unresolved": ["error", { ignore: ["^/"] }],
-			"no-restricted-imports": [
-				"error",
-				{
-					paths: [
-						{
-							importNames: ["useMemo", "useCallback", "memo"],
-							message: "Не используй useMemo/useCallback/memo — за это отвечает React Compiler.",
-							name: "react",
-						},
-						{
-							importNames: ["useMemoizedFn"],
-							message: "Не используй useMemoizedFn — за это отвечает React Compiler.",
-							name: "ahooks",
-						},
-					],
-				},
-			],
+			// "no-restricted-imports": [
+			// 	"error",
+			// 	{
+			// 		paths: [
+			// 			{
+			// 				importNames: ["useMemo", "useCallback", "memo"],
+			// 				message: "Не используй useMemo/useCallback/memo — за это отвечает React Compiler.",
+			// 				name: "react",
+			// 			},
+			// 			{
+			// 				importNames: ["useMemoizedFn"],
+			// 				message: "Не используй useMemoizedFn — за это отвечает React Compiler.",
+			// 				name: "ahooks",
+			// 			},
+			// 		],
+			// 	},
+			// ],
 			"no-restricted-syntax": [
 				"error",
 				{

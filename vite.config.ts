@@ -8,9 +8,9 @@ const shouldAnalyze = process.env.ANALYZE === "true";
 export default defineConfig({
 	plugins: [
 		react({
-			babel: {
-				plugins: [["babel-plugin-react-compiler"]],
-			},
+			// babel: {
+			// 	plugins: [["babel-plugin-react-compiler"]],
+			// },
 		}),
 		shouldAnalyze ? analyzer() : undefined,
 	],

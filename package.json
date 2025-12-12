@@ -13,7 +13,8 @@
 		"typecheck": "tsc -b",
 		"circular": "npx dpdm --exit-code circular:1 --no-tree --no-warning --progress false --transform \"./src/main.tsx\"",
 		"deadcode": "knip --exclude binaries,dependencies,unlisted",
-		"check": "run-p typecheck lint stylelint circular deadcode"
+		"check": "run-p typecheck lint stylelint circular deadcode",
+		"analyze": "ANALYZE=true vite build"
 	},
 	"dependencies": {
 		"@gravity-ui/date-utils": "^2.6.0",
@@ -38,7 +39,6 @@
 		"@types/react": "^18.3.27",
 		"@types/react-dom": "^18.3.7",
 		"@vitejs/plugin-react": "^5.1.2",
-		"babel-plugin-react-compiler": "^1.0.0",
 		"dpdm": "^3.14.0",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
